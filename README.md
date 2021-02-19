@@ -8,9 +8,9 @@ The ***objective*** of this solo challenge is to help us to assess our ability t
 - Debugging using the console
 - Understand the notion of ***"separation of concerns"***
 
-The mission of this challege is to add **two interactive data visualisation** graphics using javascript.
+This is a 5 days challenge.
 
-The user can do the following to the graph:
+The ***mission*** of this challege is to add **two interactive data visualisation** graphics using javascript and the user can do the following to the graph:
 - filter the data
 - can see the detailed data
 
@@ -20,3 +20,6 @@ The user can do the following to the graph:
 
 ## Language
 - Javascript with Chart.js
+
+## Flowchart
+![Lucidchart](/images/Data%20Visualization.jpeg)
