@@ -1,4 +1,4 @@
-(() => {
+
     var recordOne = [],
         recordTwo = [],
         year = [],
@@ -7,12 +7,23 @@
         lineDataSets1 = [],
         lineDataSets2 = [],
         index = ["label", "data", "backgroundColor", "borderColor", "borderWidth", "fill"],
-        parent = document.getElementById("mw-content-text");
+        parent = document.getElementById("mw-content-text"),
+        content = document.getElementById("content");
 
     //get the id of the table
+    var title = document.getElementById("firstHeading");
     var tableOne = document.getElementById("table1");
     var tableTwo = document.getElementById("table2");
 
+    //put canvas below the H1
+    var graphLive = document.createElement("canvas");
+    graphLive.setAttribute("id", "myChartLive");
+    graphLive.setAttribute("width", "400");
+    graphLive.setAttribute("height", "200");
+    graphLive.setAttribute("aria-label", "Chart Live");
+    graphLive.setAttribute("role", "img");
+    content.insertBefore(graphLive, title.nextSibling);
+    
     //put canvas before table1
     var graphOne = document.createElement("canvas");
     graphOne.setAttribute("id", "myChart1");
@@ -30,6 +41,61 @@
     graphTwo.setAttribute("aria-label", "Chart 2");
     graphTwo.setAttribute("role", "img");
     parent.insertBefore(graphTwo, tableTwo)
+
+    //Chart Live
+    window.onload = function(){
+        var myChartLive;
+        var dataPoints = [];
+        $.getJSON("https://canvasjs.com/services/data/datapoints.php?xstart=1&ystart=10&length=10&type=json", function(data) {  
+            $.each(data, function(key, value){
+                dataPoints.push({x: value[0], y: parseInt(value[1])});
+            });
+
+            var ctx = document.getElementById('myChartLive');
+            myChartLive = new Chart(ctx, {
+                type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Live Data',
+                    data: dataPoints,
+                    fill: false,
+                    backgroundColor: "rgba(65,105,225,0.5)",
+                    borderColor: "rgba(65,105,225,1)",
+                }]
+            },
+            options: {
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }    
+            });
+    
+            myChartLive.update();
+            updateChart();
+        });
+    
+        function updateChart() {
+            $.getJSON("https://canvasjs.com/services/data/datapoints.php?xstart=" + (dataPoints.length + 1) + "&ystart=" + (dataPoints[dataPoints.length - 1].y) + "&length=1&type=json", function(data) {
+                $.each(data, function(key, value) {
+                    dataPoints.push({
+                        x: parseInt(value[0]),
+                        y: parseInt(value[1])
+                    });
+            });
+            myChartLive.update();
+            setTimeout(function(){updateChart()}, 1000);
+            });
+        }
+    }
 
     //get data from table 1
     //first get the header
@@ -75,6 +141,26 @@
         lineData[index[5]] = false;
         lineDataSets1.push(lineData);
     }
+    //chart.js for table 1
+    var ctx1 = document.getElementById('myChart1');
+    var myChart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: year,
+            datasets: lineDataSets1
+        },
+        options: {
+            /*legend: {
+                display: true,
+                position: 'right',
+                align: 'start',
+                fullWidth: true,
+                labels: {
+                    fontColor: 'rgb(255, 99, 132)'
+                }
+            }*/
+        }
+    });
 
     //get data from table 2
     for(var i = 1; i < tableTwo.rows[0].cells.length; i++){
@@ -93,7 +179,7 @@
         }
         recordTwo.push(dataTwo);
     }   
-    console.log(recordTwo);
+
     //create datasets for chart2
     for (var i = 0; i < recordTwo.length; i++) {
         var lineData = {},
@@ -119,18 +205,6 @@
         lineData[index[5]] = false;
         lineDataSets2.push(lineData);
     }
-    //console.log(lineDataSets2);
-
-    //chart.js for table 1
-    var ctx1 = document.getElementById('myChart1');
-    var myChart1 = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: year,
-            datasets: lineDataSets1
-        },
-        options: {}
-    });
 
     //chart.js for table 2
     var ctx2 = document.getElementById('myChart2');
@@ -142,4 +216,3 @@
         },
         options: {}
     });
-})();
