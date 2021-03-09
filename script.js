@@ -80,15 +80,20 @@
     for(var i = 1; i < tableTwo.rows[0].cells.length; i++){
         headerTwo[i-1] = (tableTwo.rows[0].cells[i].innerHTML).toLowerCase();
     }
-
     for(var i = 1; i < tableTwo.rows.length; i++){
         var dataTwo = {};
         for(var j = 1; j < tableTwo.rows[i].cells.length;j++){
-            var str = tableTwo.rows[i].cells[j].innerHTML;
-            dataTwo[headerTwo[j-1]] = str;
+            if(j > 1){
+                dataTwo[headerTwo[j-1]] = parseInt(tableTwo.rows[i].cells[j].innerHTML);
+            }else{
+                var str = tableTwo.rows[i].cells[1].innerHTML;
+            dataTwo[headerTwo[j-1]] = (tableTwo.rows[i].cells[j].innerHTML).replace(/\n/,"").replace("<br>","").replace(/\s+/g," ");
+            }
+            
         }
         recordTwo.push(dataTwo);
     }   
+    console.log(recordTwo);
     //create datasets for chart2
     for (var i = 0; i < recordTwo.length; i++) {
         var lineData = {},
@@ -114,7 +119,7 @@
         lineData[index[5]] = false;
         lineDataSets2.push(lineData);
     }
-    console.log(lineDataSets2);
+    //console.log(lineDataSets2);
 
     //chart.js for table 1
     var ctx1 = document.getElementById('myChart1');
