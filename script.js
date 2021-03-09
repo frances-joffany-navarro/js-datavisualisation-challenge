@@ -6,6 +6,7 @@
         headerTwo = [],
         lineDataSets1 = [],
         lineDataSets2 = [],
+        
         index = ["label", "data", "backgroundColor", "borderColor", "borderWidth", "fill"],
         parent = document.getElementById("mw-content-text"),
         content = document.getElementById("content");
@@ -61,6 +62,7 @@
                     fill: false,
                     backgroundColor: "rgba(65,105,225,0.5)",
                     borderColor: "rgba(65,105,225,1)",
+                    borderWidth: 1,
                 }]
             },
             options: {
@@ -117,23 +119,24 @@
     }
 
     //create a array of object for the dataset in chart.js
-    for (var i = 0; i < recordOne.length; i++) {
-        var lineData = {},
+    for (var y = 2002; y <= 2012; y++) {    
+        var country = [],
+            lineData = {},
             chartData = [],
             bgcolor = [],
             bcolor = [],
             randomColor1 = Math.floor(Math.random() * 225) + 1,
             randomColor2 = Math.floor(Math.random() * 225) + 1,
-            randomColor3 = Math.floor(Math.random() * 225) + 1;
+            randomColor3 = Math.floor(Math.random() * 225) + 1;        
 
-        lineData[index[0]] = recordOne[i].country;
-
-        for (var y = 2002; y <= 2012; y++) {
+        for (var i = 0; i < recordOne.length; i++) {
+            country.push(recordOne[i].country);
+            lineData[index[0]] = "" + y;
             chartData.push(recordOne[i][y]);
             bgcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",0.2)");
             bcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",1)");
         }
-
+        
         lineData[index[1]] = chartData;
         lineData[index[2]] = bgcolor;
         lineData[index[3]] = bcolor;
@@ -141,24 +144,26 @@
         lineData[index[5]] = false;
         lineDataSets1.push(lineData);
     }
+    
     //chart.js for table 1
     var ctx1 = document.getElementById('myChart1');
     var myChart1 = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: year,
+            labels: country,
             datasets: lineDataSets1
         },
         options: {
-            /*legend: {
+            legend: {
                 display: true,
-                position: 'right',
-                align: 'start',
+                position: 'top',
+                align: 'center',
                 fullWidth: true,
                 labels: {
-                    fontColor: 'rgb(255, 99, 132)'
+                    fontColor: 'rgb(65,105,225)', //rgba(65,105,225,0.5)
+                    boxWidth: 25,
                 }
-            }*/
+            }
         }
     });
 
@@ -180,38 +185,38 @@
         recordTwo.push(dataTwo);
     }   
 
-    //create datasets for chart2
-    for (var i = 0; i < recordTwo.length; i++) {
-        var lineData = {},
-            chartData = [],
-            bgcolor = [],
-            bcolor = [],
-            randomColor1 = Math.floor(Math.random() * 225) + 1,
-            randomColor2 = Math.floor(Math.random() * 225) + 1,
-            randomColor3 = Math.floor(Math.random() * 225) + 1;
-
-        lineData[index[0]] = recordTwo[i].country;
-            chartData.push(recordTwo[i]["2007–09"]);
-            chartData.push(recordTwo[i]["2010–12"]);
-            bgcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",0.2)");
+    for(var j = 2; j < tableTwo.rows[0].cells.length; j++){
+        var country = [],
+        chartData = [],
+        bgcolor = [],
+        bcolor = [],
+        randomColor1 = Math.floor(Math.random() * 225) + 1,
+        randomColor2 = Math.floor(Math.random() * 225) + 1,
+        randomColor3 = Math.floor(Math.random() * 225) + 1;
+        str = (tableTwo.rows[0].cells[j].innerHTML).toLowerCase();
+        for (var i = 0; i < recordTwo.length; i++) {
+            var lineData = {};            
+            country.push(recordTwo[i].country);
+            chartData.push(recordTwo[i][str]);
             bgcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",0.2)");
             bcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",1)");
-            bcolor.push("rgba(" + randomColor1 + "," + randomColor2 + "," + randomColor3 + ",1)");
-
-        lineData[index[1]] = chartData;
-        lineData[index[2]] = bgcolor;
-        lineData[index[3]] = bcolor;
-        lineData[index[4]] = 1;
-        lineData[index[5]] = false;
+            
+            lineData[index[0]] = str;
+            lineData[index[1]] = chartData;
+            lineData[index[2]] = bgcolor;
+            lineData[index[3]] = bcolor;
+            lineData[index[4]] = 1;
+            lineData[index[5]] = false;            
+        }             
         lineDataSets2.push(lineData);
     }
 
     //chart.js for table 2
     var ctx2 = document.getElementById('myChart2');
     var myChart2 = new Chart(ctx2, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: ["2007–09", "2010–12"], 
+            labels: country, 
             datasets: lineDataSets2
         },
         options: {}
