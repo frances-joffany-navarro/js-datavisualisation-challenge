@@ -87,7 +87,7 @@
                 dataTwo[headerTwo[j-1]] = parseInt(tableTwo.rows[i].cells[j].innerHTML);
             }else{
                 var str = tableTwo.rows[i].cells[1].innerHTML;
-            dataTwo[headerTwo[j-1]] = (tableTwo.rows[i].cells[j].innerHTML).replace(/\n/,"").replace("<br>","").replace(/\s+/g," ");
+                dataTwo[headerTwo[j-1]] = (tableTwo.rows[i].cells[j].innerHTML).replace(/\n/,"").replace("<br>","").replace(/\s+/g," ");
             }
             
         }
