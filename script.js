@@ -5,8 +5,7 @@
         headerOne = ["country"],
         headerTwo = [],
         lineDataSets1 = [],
-        lineDataSets2 = [],
-        
+        lineDataSets2 = [],        
         index = ["label", "data", "backgroundColor", "borderColor", "borderWidth", "fill"],
         parent = document.getElementById("mw-content-text"),
         content = document.getElementById("content");
@@ -43,7 +42,7 @@
     graphTwo.setAttribute("role", "img");
     parent.insertBefore(graphTwo, tableTwo)
 
-    //Chart Live
+    // Start Code for Chart Live
     window.onload = function(){
         var myChartLive;
         var dataPoints = [];
@@ -98,9 +97,13 @@
             });
         }
     }
+    // End Code for Chart Live
 
-    //get data from table 1
-    //first get the header
+    /* 
+     * Start Code for Chart 1
+     * Get data from table 1
+     * First, get the header data
+     */
     for (var i = 2; i < tableOne.rows[1].cells.length; i++) {
         headerOne[i - 1] = tableOne.rows[1].cells[i].innerHTML;
         year[i - 2] = tableOne.rows[1].cells[i].innerHTML;
@@ -167,7 +170,12 @@
         }
     });
 
-    //get data from table 2
+    // End Code for Chart 1
+
+    /*
+     * Start Code for Chart 2
+     * get data from table 2
+    */
     for(var i = 1; i < tableTwo.rows[0].cells.length; i++){
         headerTwo[i-1] = (tableTwo.rows[0].cells[i].innerHTML).toLowerCase();
     }
@@ -221,3 +229,5 @@
         },
         options: {}
     });
+
+    // End Code for Chart 2
